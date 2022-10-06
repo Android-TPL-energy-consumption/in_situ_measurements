@@ -14,8 +14,12 @@ adb = "/opt/android-sdk/platform-tools/adb"
 
 def thread_function():
     print("Running scenario on phone...")
-    subprocess.call("{} shell sh /data/local/tmp/scenario.sh".format(adb), shell=True)
-    print("Scenario finished.")
+    subprocess.call('{} shell nohup sh /data/local/tmp/scenario.sh'.format(adb), shell=True)
+    print("Scenario launched.")
+
+
+def start_sampling():
+    monsoon_engine.startSampling(sampleEngine.triggers.SAMPLECOUNT_INFINITE)
 
 
 def setup_monsoon():
@@ -27,8 +31,6 @@ def setup_monsoon():
     engine.enableCSVOutput("results.csv")
     engine.ConsoleOutput(True)
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
-
-    monsoon.stopSampling()
 
     return engine
 
@@ -50,8 +52,10 @@ thread = threading.Thread(target=thread_function)
 thread.start()
 
 # Start sampling
-monsoon_engine.startSampling(sampleEngine.triggers.SAMPLECOUNT_INFINITE)
+threading.Thread(target=start_sampling).start()
 
 # Stop sampling after scenario is over
-thread.join()
+print("Waiting for scenario to end...")
+sleep(22)
 monsoon.stopSampling()
+print("Done.")
