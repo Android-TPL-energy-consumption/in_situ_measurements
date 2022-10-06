@@ -18,7 +18,7 @@ def thread_function():
 
 
 def setup_monsoon():
-    monsoon.setup_usb(LVPMSerialNo, pmapi.USB_protocol)
+    monsoon.setup_usb(LVPMSerialNo, pmapi.USB_protocol())
 
     monsoon.fillStatusPacket()
     monsoon.setVout(4)
