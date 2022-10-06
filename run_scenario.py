@@ -29,8 +29,12 @@ def setup_monsoon():
     monsoon.setVout(4)
     engine = sampleEngine.SampleEngine(monsoon)
     engine.enableCSVOutput("results.csv")
-    engine.ConsoleOutput(True)
+    engine.ConsoleOutput(False)
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
+
+    # engine.setStartTrigger(sampleEngine.triggers.LESS_THAN, 10000)
+    engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, 30)
+    engine.setTriggerChannel(sampleEngine.channels.timeStamp)
 
     return engine
 
@@ -52,10 +56,12 @@ thread = threading.Thread(target=thread_function)
 thread.start()
 
 # Start sampling
-threading.Thread(target=start_sampling).start()
+thread = threading.Thread(target=start_sampling)
+thread.start()
 
 # Stop sampling after scenario is over
 print("Waiting for scenario to end...")
-sleep(22)
-monsoon.stopSampling()
+thread.join()
+print("Scenario is over.")
+
 print("Done.")
