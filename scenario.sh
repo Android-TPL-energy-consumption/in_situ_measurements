@@ -6,7 +6,7 @@ PACKAGE="tpl.monitoring.firebase"
 ACTIVITY="tpl.monitoring.firebase.ScreenSlidePagerActivity"
 
 # Launch app
-adb shell am start -n $PACKAGE/$ACTIVITY
+am start -n $PACKAGE/$ACTIVITY
 
 # Wait a bit to let Monsoon start sampling.
 sleep 2
