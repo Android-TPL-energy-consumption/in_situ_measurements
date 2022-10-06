@@ -3,6 +3,9 @@
 PACKAGE="tpl.monitoring.firebase"
 ACTIVITY="tpl.monitoring.firebase.ScreenSlidePagerActivity"
 
+# Start monitoring before app launches
+sleep 2
+
 # Launch app
 am start -n $PACKAGE/$ACTIVITY
 

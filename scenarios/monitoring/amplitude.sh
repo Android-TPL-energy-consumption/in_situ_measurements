@@ -3,6 +3,9 @@
 PACKAGE="tpl.monitoring.amplitude"
 ACTIVITY="tpl.monitoring.amplitude.ScreenSlidePagerActivity"
 
+# Start monitoring before app launches
+sleep 2
+
 # Launch app
 am start -n $PACKAGE/$ACTIVITY
 

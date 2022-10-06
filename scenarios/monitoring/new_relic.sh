@@ -3,6 +3,9 @@
 PACKAGE="tpl.monitoring.newrelic"
 ACTIVITY="tpl.monitoring.newrelic.ScreenSlidePagerActivity"
 
+# Start monitoring before app launches
+sleep 2
+
 # Launch app
 am start -n $PACKAGE/$ACTIVITY
 
