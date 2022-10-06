@@ -7,9 +7,17 @@ import Monsoon.sampleEngine as sampleEngine
 import Monsoon.Operations as op
 import Monsoon.pmapi as pmapi
 
+from utils.application import TestedApplication
+
 LVPMSerialNo = 12431
 monsoon = LVPM.Monsoon()
 adb = "/opt/android-sdk/platform-tools/adb"
+runsCount = 5
+applications = [
+    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh"),
+    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh"),
+    TestedApplication("Amplitude", "scenarios/monitoring/new_relic.sh")
+]
 
 
 def thread_function():
@@ -32,7 +40,6 @@ def setup_monsoon():
     engine.ConsoleOutput(False)
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
 
-    # engine.setStartTrigger(sampleEngine.triggers.LESS_THAN, 10000)
     engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, 30)
     engine.setTriggerChannel(sampleEngine.channels.timeStamp)
 
