@@ -9,11 +9,12 @@ import Monsoon.pmapi as pmapi
 
 LVPMSerialNo = 12431
 monsoon = LVPM.Monsoon()
+adb = "/opt/android-sdk/platform-tools/adb"
 
 
 def thread_function():
     print("Running scenario on phone...")
-    subprocess.call("adb shell sh /data/local/tmp/scenario.sh", shell=True)
+    subprocess.call("{} shell sh /data/local/tmp/scenario.sh".format(adb), shell=True)
     print("Scenario finished.")
 
 
@@ -41,7 +42,7 @@ sleep(60)
 
 # Deploy scenario on phone
 print("Deploying scenario on phone...")
-subprocess.call("adb push scenario.sh /data/local/tmp", shell=True)
+subprocess.call("{} push scenario.sh /data/local/tmp".format(adb), shell=True)
 print("Done.")
 
 # Launch scenario
