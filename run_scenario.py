@@ -67,7 +67,20 @@ def run_all_experiments():
 
 
 def thread_function(scenariopath):
+    """Starts input scenario on tested phone.
+
+    Gets scenario file name from input parameter (which is desktop scenario local path), and
+    sends an adb command to tested phone, for it to run given scenario.
+
+    Since USB connection between desktop and tested phone is shut down when sampling starts,
+    this launches test scenario using the nohup command[1].
+
+    [1]: https://linuxhint.com/how_to_use_nohup_linux/
+    """
     print("Running scenario on phone...")
+
+    # scenariopath is local relative path (e.g. scenarios/monitoring/amplitude.sh),
+    # so we extract file name from it (e.g. amplitude.sh).
     scenario = scenariopath.split("/")[-1]
     subprocess.call('{} shell nohup sh /data/local/tmp/{}'.format(adb, scenario), shell=True)
     print("Scenario launched.")
