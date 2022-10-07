@@ -91,14 +91,27 @@ def start_sampling():
 
 
 def setup_monsoon():
+    """ Sets up Monsoon power monitor configuration.
+
+    This configures Monsoon low-voltage power monitor (LVPM)[1] to provide some current on main channels to power tested
+    phone.
+
+    [1]: https://msoon.github.io/powermonitor/LVPM.html
+    """
     monsoon.setup_usb(LVPMSerialNo, pmapi.USB_protocol())
 
+    # Basic configuration.
     monsoon.fillStatusPacket()
     monsoon.setVout(4)
     engine = sampleEngine.SampleEngine(monsoon)
+
+    # Disables console output.
     engine.ConsoleOutput(False)
+
+    # Auto mode disables USB connection when sampling starts, and reactivates it when sampling ends.
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
 
+    # Stops sampling after 30 seconds.
     engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, 30)
     engine.setTriggerChannel(sampleEngine.channels.timeStamp)
 
