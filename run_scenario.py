@@ -12,7 +12,6 @@ from utils.application import TestedApplication
 
 # Identifier of the Monsoon LVPM.
 LVPMSerialNo = 12431
-monsoon = LVPM.Monsoon()
 
 # Since this is run as root, adb must be invoked from its absolute path.
 adb = "/opt/android-sdk/platform-tools/adb"
@@ -106,6 +105,7 @@ def setup_monsoon():
 
     [1]: https://msoon.github.io/powermonitor/LVPM.html
     """
+    monsoon = LVPM.Monsoon()
     monsoon.setup_usb(LVPMSerialNo, pmapi.USB_protocol())
 
     # Basic configuration.
