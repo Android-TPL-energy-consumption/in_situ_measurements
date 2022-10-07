@@ -9,10 +9,18 @@ import Monsoon.pmapi as pmapi
 
 from utils.application import TestedApplication
 
+
+# Identifier of the Monsoon LVPM.
 LVPMSerialNo = 12431
 monsoon = LVPM.Monsoon()
+
+# Since this is run as root, adb must be invoked from its absolute path.
 adb = "/opt/android-sdk/platform-tools/adb"
+
+# Number of times all scenarios will be run.
 runsCount = 2
+
+# Tested applications.
 applications = [
     TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh"),
     TestedApplication("Firebase", "scenarios/monitoring/firebase.sh"),
