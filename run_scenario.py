@@ -21,9 +21,23 @@ applications = [
 
 
 def run_all_experiments():
+    """Runs all experiments at once.
+
+    This will run experiments on tested applications in a round-robin fashion, to
+    avoid applications to take any benefit from caches.
+
+    You can tune experimentation by updating `runsCount` and `applications` global
+    variables.
+
+    Here's what this method does in detail:
+        * leave some time to user to boot up tested phone;
+        * upload all test scenarios at once to tested phone;
+        * run scenarios.
+    """
+
     # Let user some time to boot phone
     print("You can boot your phone now.")
-    # sleep(60)
+    sleep(60)
 
     # Push test scenarios to phone
     print("\n==> Uploading test scenarios to phone...")
@@ -38,7 +52,7 @@ def run_all_experiments():
             # Launch scenario
             threading.Thread(target=thread_function, args=(app.scenario,)).start()
 
-            # Start sampling
+            # Start sampling (disables USB connection)
             monsoon_engine.enableCSVOutput("{}_{}.csv".format(app.name, x))
             thread = threading.Thread(target=start_sampling)
             thread.start()
