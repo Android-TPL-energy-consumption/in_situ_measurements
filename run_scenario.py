@@ -21,9 +21,9 @@ runsCount = 2
 
 # Tested applications.
 applications = [
-    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh"),
-    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh"),
-    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh")
+    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30),
+    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30),
+    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30)
 ]
 
 
@@ -55,6 +55,9 @@ def run_all_experiments():
     for x in range(runsCount):
         for app in applications:
             print("\n==> Launching experiment n°{} with {} application".format(x, app.name))
+
+            # Stops sampling after scenario is over.
+            monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
 
             # Launch scenario
             threading.Thread(target=thread_function, args=(app.scenario,)).start()
@@ -119,8 +122,7 @@ def setup_monsoon():
     # Auto mode disables USB connection when sampling starts, and reactivates it when sampling ends.
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
 
-    # Stops sampling after 30 seconds.
-    engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, 30)
+    # Stop condition is time (will wait for a scenario to end).
     engine.setTriggerChannel(sampleEngine.channels.timeStamp)
 
     return engine
