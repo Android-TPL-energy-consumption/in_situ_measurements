@@ -10,6 +10,38 @@ This repository holds scripts used to monitor applications' energy consumption o
 * Battery-bypassed phone
 * Compiled (release mode) test APKs (you'll find test applications among this organisation's repositories)
 
+### Setup
+
+Before launching script, you might want to edit some of its parameters:
+
+```python
+# Test phone serial ID (listed in `adb devices`).
+# This allows you to run experiments while other devices are plugged-in to your computer.
+deviceId = ""
+
+# Identifier of the Monsoon LVPM.
+# This is written in the back of the power monitor.
+LVPMSerialNo = 12431
+
+# Since script is ran as root, adb must be invoked from its absolute path.
+adb = "/opt/android-sdk/platform-tools/adb"
+
+# Number of times all scenarios will be run.
+runsCount = 30
+
+# Tested applications.
+# You must provide name of the application, relative path to test scenario, duration in seconds of said scenario, test 
+# application package and path to test application APK file.
+applications = [
+    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30,
+                      "tpl.monitoring.amplitude", "apks/monitoring/amplitude.apk"),
+    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30,
+                      "tpl.monitoring.firebase", "apks/monitoring/firebase.apk"),
+    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30,
+                      "tpl.monitoring.newrelic", "apks/monitoring/new-relic.apk")
+]
+```
+
 ### Run
 
 Monsoon requires scripts to be run as `sudo`, otherwise it will throw an error telling it does not have access to LVPM.
