@@ -10,6 +10,9 @@ import Monsoon.pmapi as pmapi
 from utils.application import TestedApplication
 
 
+# Test phone serial ID (listed in `adb devices`).
+deviceId = "R58R11WW16L"
+
 # Identifier of the Monsoon LVPM.
 LVPMSerialNo = 12431
 
@@ -17,7 +20,7 @@ LVPMSerialNo = 12431
 adb = "/opt/android-sdk/platform-tools/adb"
 
 # Number of times all scenarios will be run.
-runsCount = 30
+runsCount = 2
 
 # Tested applications.
 applications = [
@@ -52,28 +55,28 @@ def run_all_experiments():
     # Push test scenarios to phone
     print("\n==> Uploading test scenarios to phone...")
     for app in applications:
-        subprocess.call("{} push {} /data/local/tmp".format(adb, app.scenario), shell=True)
+        subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, app.scenario), shell=True)
 
     # Force the screen to be always on
-    subprocess.call("{} shell svc power stayon true".format(adb), shell=True)
+    subprocess.call("{} -s {} shell svc power stayon true".format(adb, deviceId), shell=True)
 
     # Run scenarios
     for x in range(runsCount):
         for app in applications:
             # Disable auto brigthness setting
-            subprocess.call("{} shell settings put system screen_brightness_mode 0".format(adb), shell=True)
+            subprocess.call("{} -s {} shell settings put system screen_brightness_mode 0".format(adb, deviceId), shell=True)
 
             # Set a low screen brightness value
-            subprocess.call("{} shell settings put system screen_brightness 1".format(adb), shell=True)
+            subprocess.call("{} -s {} shell settings put system screen_brightness 1".format(adb, deviceId), shell=True)
 
             # Set battery level to 100%
-            subprocess.call("{} shell dumpsys battery set level 100".format(adb), shell=True)
+            subprocess.call("{} -s {} shell dumpsys battery set level 100".format(adb, deviceId), shell=True)
 
             print("\n==> Launching run n°{} with {} application".format(x, app.name))
 
             # Install application
             print("====> Installing test application on phone...")
-            subprocess.call("{} install {}".format(adb, app.apk_path), shell=True)
+            subprocess.call("{} -s {} install {}".format(adb, deviceId, app.apk_path), shell=True)
 
             # Stops sampling after scenario is over.
             monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
@@ -95,17 +98,17 @@ def run_all_experiments():
             sleep(4)
 
             # Stop the application.
-            subprocess.call("{} shell am force-stop {}".format(adb, app.package_name), shell=True)
+            subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
             # Uninstall application
             print("====> Uninstalling test application...")
-            subprocess.call("{} uninstall {}".format(adb, app.package_name), shell=True)
+            subprocess.call("{} -s {} uninstall {}".format(adb, deviceId, app.package_name), shell=True)
 
     # Allow the screen to be powered off to save battery
-    subprocess.call("{} shell svc power stayon false".format(adb), shell=True)
+    subprocess.call("{} -s {} shell svc power stayon false".format(adb, deviceId), shell=True)
 
     # Enable auto brigthness setting
-    subprocess.call("{} shell settings put system screen_brightness_mode 1".format(adb), shell=True)
+    subprocess.call("{} -s {} shell settings put system screen_brightness_mode 1".format(adb, deviceId), shell=True)
 
 
 def thread_function(scenariopath):
@@ -124,7 +127,7 @@ def thread_function(scenariopath):
     # scenariopath is local relative path (e.g. scenarios/monitoring/amplitude.sh),
     # so we extract file name from it (e.g. amplitude.sh).
     scenario = scenariopath.split("/")[-1]
-    subprocess.call('{} shell nohup sh /data/local/tmp/{}'.format(adb, scenario), shell=True)
+    subprocess.call('{} -s {} shell nohup sh /data/local/tmp/{}'.format(adb, deviceId, scenario), shell=True)
     print("Scenario launched.")
 
 
