@@ -17,13 +17,16 @@ LVPMSerialNo = 12431
 adb = "/opt/android-sdk/platform-tools/adb"
 
 # Number of times all scenarios will be run.
-runsCount = 1
+runsCount = 30
 
 # Tested applications.
 applications = [
-    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30, "tpl.monitoring.amplitude"),
-    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30, "tpl.monitoring.firebase"),
-    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30, "tpl.monitoring.newrelic")
+    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30,
+                      "tpl.monitoring.amplitude", "apks/monitoring/amplitude.apk"),
+    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30,
+                      "tpl.monitoring.firebase", "apks/monitoring/firebase.apk"),
+    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30,
+                      "tpl.monitoring.newrelic", "apks/monitoring/new-relic.apk")
 ]
 
 
@@ -50,6 +53,11 @@ def run_all_experiments():
     print("\n==> Uploading test scenarios to phone...")
     for app in applications:
         subprocess.call("{} push {} /data/local/tmp".format(adb, app.scenario), shell=True)
+
+    # Install test applications
+    print("\n==> Installing test applications on phone...")
+    for app in applications:
+        subprocess.call("{} install {}".format(adb, app.apk_path), shell=True)
 
     # Force the screen to be always on
     subprocess.call("{} shell svc power stayon true".format(adb), shell=True)
