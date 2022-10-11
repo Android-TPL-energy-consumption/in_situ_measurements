@@ -54,11 +54,6 @@ def run_all_experiments():
     for app in applications:
         subprocess.call("{} push {} /data/local/tmp".format(adb, app.scenario), shell=True)
 
-    # Install test applications
-    print("\n==> Installing test applications on phone...")
-    for app in applications:
-        subprocess.call("{} install {}".format(adb, app.apk_path), shell=True)
-
     # Force the screen to be always on
     subprocess.call("{} shell svc power stayon true".format(adb), shell=True)
 
@@ -76,6 +71,10 @@ def run_all_experiments():
 
             print("\n==> Launching run n°{} with {} application".format(x, app.name))
 
+            # Install application
+            print("====> Installing test application on phone...")
+            subprocess.call("{} install {}".format(adb, app.apk_path), shell=True)
+
             # Stops sampling after scenario is over.
             monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
 
@@ -88,15 +87,19 @@ def run_all_experiments():
             thread.start()
 
             # Stop sampling after scenario is over
-            print("Waiting for scenario to end...")
+            print("====> Waiting for scenario to end (will throw since phone is disconnected on sampling start)...")
             thread.join()
-            print("Scenario is over.")
+            print("====> Scenario is over.")
 
             # Wait for phone to be reconnected to computer
             sleep(4)
 
             # Stop the application.
             subprocess.call("{} shell am force-stop {}".format(adb, app.package_name), shell=True)
+
+            # Uninstall application
+            print("====> Uninstalling test application...")
+            subprocess.call("{} uninstall {}".format(adb, app.package_name), shell=True)
 
     # Allow the screen to be powered off to save battery
     subprocess.call("{} shell svc power stayon false".format(adb), shell=True)
