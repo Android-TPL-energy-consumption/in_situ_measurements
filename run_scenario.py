@@ -51,11 +51,23 @@ def run_all_experiments():
     for app in applications:
         subprocess.call("{} push {} /data/local/tmp".format(adb, app.scenario), shell=True)
 
+    # Force the screen to be always on
+    subprocess.call("{} shell svc power stayon true".format(adb), shell=True)
+        
     # Run scenarios
     for x in range(runsCount):
         for app in applications:
-            print("\n==> Launching experiment n°{} with {} application".format(x, app.name))
-
+            # Disable auto brigthness setting
+            subprocess.call("{} shell settings put system screen_brightness_mode 0".format(adb), shell=True)
+            
+            # Set a low screen brightness value
+            subprocess.call("{} shell settings put system screen_brightness 1".format(adb), shell=True)
+            
+            # Set battery level to 100%
+            subprocess.call("{} shell dumpsys battery set level 100".format(adb), shell=True)
+            
+            print("\n==> Launching run{} with {} application".format(x, app.name))
+            
             # Stops sampling after scenario is over.
             monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
 
@@ -72,8 +84,18 @@ def run_all_experiments():
             thread.join()
             print("Scenario is over.")
 
+            #Stop the application
+            #Package can be added as field of the TestedApplication class
+            #subprocess.call("{} shell am force-stop {}".format(adb, package), shell=True)
+
             # Wait for phone to be reconnected to computer
             sleep(4)
+     
+    # Allow the screen to be powered off to save battery
+    subprocess.call("{} shell svc power stayon false".format(adb), shell=True)
+    
+    # Enable auto brigthness setting
+    subprocess.call("{} shell settings put system screen_brightness_mode 1".format(adb), shell=True)
 
 
 def thread_function(scenariopath):
