@@ -17,13 +17,13 @@ LVPMSerialNo = 12431
 adb = "/opt/android-sdk/platform-tools/adb"
 
 # Number of times all scenarios will be run.
-runsCount = 2
+runsCount = 1
 
 # Tested applications.
 applications = [
-    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30),
-    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30),
-    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30)
+    TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30, "tpl.monitoring.amplitude"),
+    TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30, "tpl.monitoring.firebase"),
+    TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30, "tpl.monitoring.newrelic")
 ]
 
 
@@ -44,7 +44,7 @@ def run_all_experiments():
 
     # Let user some time to boot phone
     print("You can boot your phone now.")
-    sleep(60)
+    # sleep(90)
 
     # Push test scenarios to phone
     print("\n==> Uploading test scenarios to phone...")
@@ -53,21 +53,21 @@ def run_all_experiments():
 
     # Force the screen to be always on
     subprocess.call("{} shell svc power stayon true".format(adb), shell=True)
-        
+
     # Run scenarios
     for x in range(runsCount):
         for app in applications:
             # Disable auto brigthness setting
             subprocess.call("{} shell settings put system screen_brightness_mode 0".format(adb), shell=True)
-            
+
             # Set a low screen brightness value
             subprocess.call("{} shell settings put system screen_brightness 1".format(adb), shell=True)
-            
+
             # Set battery level to 100%
             subprocess.call("{} shell dumpsys battery set level 100".format(adb), shell=True)
-            
-            print("\n==> Launching run{} with {} application".format(x, app.name))
-            
+
+            print("\n==> Launching run n°{} with {} application".format(x, app.name))
+
             # Stops sampling after scenario is over.
             monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
 
@@ -84,16 +84,15 @@ def run_all_experiments():
             thread.join()
             print("Scenario is over.")
 
-            #Stop the application
-            #Package can be added as field of the TestedApplication class
-            #subprocess.call("{} shell am force-stop {}".format(adb, package), shell=True)
-
             # Wait for phone to be reconnected to computer
             sleep(4)
-     
+
+            # Stop the application.
+            subprocess.call("{} shell am force-stop {}".format(adb, app.package_name), shell=True)
+
     # Allow the screen to be powered off to save battery
     subprocess.call("{} shell svc power stayon false".format(adb), shell=True)
-    
+
     # Enable auto brigthness setting
     subprocess.call("{} shell settings put system screen_brightness_mode 1".format(adb), shell=True)
 
