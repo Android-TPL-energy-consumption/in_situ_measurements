@@ -8,6 +8,7 @@ This repository holds scripts used to monitor applications' energy consumption o
 
 * Monsoon low-voltage power monitor: https://msoon.github.io/powermonitor/LVPM.html
 * Battery-bypassed phone
+* Compiled (release mode) test APKs (you'll find test applications among this organisation's repositories)
 
 ### Run
 
