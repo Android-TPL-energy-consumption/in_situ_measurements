@@ -19,8 +19,8 @@ LVPMSerialNo = 12431
 # Since this is run as root, adb must be invoked from its absolute path.
 adb = "/opt/android-sdk/platform-tools/adb"
 
-# Number of times all scenarios will be run.
-runsCount = 2
+# Number of times all scenarios will be ran.
+runsCount = 30
 
 # Tested applications.
 applications = [
@@ -50,12 +50,17 @@ def run_all_experiments():
 
     # Let user some time to boot phone
     print("You can boot your phone now.")
-    # sleep(90)
+    sleep(90)
 
     # Push test scenarios to phone
     print("\n==> Uploading test scenarios to phone...")
     for app in applications:
         subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, app.scenario), shell=True)
+
+    # Install all applications at once.
+    print("\n==> Installing test applications on phone...")
+    for app in applications:
+        subprocess.call("{} -s {} install {}".format(adb, deviceId, app.apk_path), shell=True)
 
     # Force the screen to be always on
     subprocess.call("{} -s {} shell svc power stayon true".format(adb, deviceId), shell=True)
@@ -75,8 +80,8 @@ def run_all_experiments():
             print("\n==> Launching run n°{} with {} application".format(x, app.name))
 
             # Install application
-            print("====> Installing test application on phone...")
-            subprocess.call("{} -s {} install {}".format(adb, deviceId, app.apk_path), shell=True)
+            # print("====> Installing test application on phone...")
+            # subprocess.call("{} -s {} install {}".format(adb, deviceId, app.apk_path), shell=True)
 
             # Stops sampling after scenario is over.
             monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
@@ -101,14 +106,20 @@ def run_all_experiments():
             subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
             # Uninstall application
-            print("====> Uninstalling test application...")
-            subprocess.call("{} -s {} uninstall {}".format(adb, deviceId, app.package_name), shell=True)
+            # print("====> Uninstalling test application...")
+            # subprocess.call("{} -s {} uninstall {}".format(adb, deviceId, app.package_name), shell=True)
 
     # Allow the screen to be powered off to save battery
     subprocess.call("{} -s {} shell svc power stayon false".format(adb, deviceId), shell=True)
 
     # Enable auto brigthness setting
     subprocess.call("{} -s {} shell settings put system screen_brightness_mode 1".format(adb, deviceId), shell=True)
+
+    # Install all applications at once.
+    print("\n==> Uninstalling test applications...")
+    for app in applications:
+        subprocess.call("{} -s {} uninstall {}".format(adb, deviceId, app.package_name), shell=True)
+    print("Done.\n")
 
 
 def thread_function(scenariopath):
