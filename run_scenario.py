@@ -13,6 +13,9 @@ from utils.application import TestedApplication
 # Test phone serial ID (listed in `adb devices`).
 deviceId = "R58R11WW16L"
 
+# Test phone battery voltage (usually written on it).
+deviceVoltage = 4.4
+
 # Identifier of the Monsoon LVPM.
 LVPMSerialNo = 12431
 
@@ -159,7 +162,7 @@ def setup_monsoon():
 
     # Basic configuration.
     monsoon.fillStatusPacket()
-    monsoon.setVout(4)
+    monsoon.setVout(deviceVoltage)
     engine = sampleEngine.SampleEngine(monsoon)
 
     # Disables console output.

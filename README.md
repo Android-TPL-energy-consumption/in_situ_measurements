@@ -19,6 +19,10 @@ Before launching script, you might want to edit some of its parameters:
 # This allows you to run experiments while other devices are plugged-in to your computer.
 deviceId = ""
 
+# Test phone battery voltage (usually written on it).
+# This directly influences current furnished by power monitor to the test phone.
+deviceVoltage = 4.4
+
 # Identifier of the Monsoon LVPM.
 # This is written in the back of the power monitor.
 LVPMSerialNo = 12431
