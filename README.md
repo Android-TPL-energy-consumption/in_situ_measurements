@@ -12,7 +12,7 @@ This repository holds scripts used to monitor applications' energy consumption o
 
 ### Setup
 
-Before launching script, you might want to edit some of its parameters:
+Before launching script, you might want to edit some of its parameters, which are located in `utils/settings.py`:
 
 ```python
 # Test phone serial ID (listed in `adb devices`).
