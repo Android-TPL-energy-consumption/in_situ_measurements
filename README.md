@@ -1,7 +1,7 @@
 # In-situ measurements
 
 This repository holds scripts used to monitor applications' energy consumption on Android. Scripts are:
-* `run_scenario.py`: Python script, launched on desktop, that will run all test scenarios on tested phone;
+* `scripts/run_scenario.py`: Python script, launched on desktop, that will run all test scenarios on tested phone;
 * `scenarios/**.sh`: test scenarios that will run on phone.
 
 ### Requirements
@@ -55,7 +55,7 @@ Monsoon requires scripts to be run as `sudo`, otherwise it will throw an error t
 sudo pip install monsoon
 
 ## Run experiments (from project root)
-sudo python3 run_scenario.py
+sudo python3 scripts/run_scenario.py
 ```
 
 ### External references
