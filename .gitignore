@@ -1,2 +1,7 @@
 .idea
+
+# measurements output
 *.csv
+*.meminfo
+*.pss
+*.top
