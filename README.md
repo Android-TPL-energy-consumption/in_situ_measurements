@@ -1,6 +1,7 @@
 # In-situ measurements
 
-This repository holds scripts used to monitor applications' energy consumption on Android. Scripts are:
+This repository holds scripts used to monitor applications' energy consumption and system metrics on Android. Scripts 
+are:
 * `**.py`: Python scripts, launched on desktop, that will run all test scenarios on tested phone;
 * `scenarios/**.sh`: test scenarios that will run on phone.
 
@@ -12,7 +13,7 @@ This repository holds scripts used to monitor applications' energy consumption o
 
 ### Setup
 
-Before launching script, you might want to edit some of its parameters, which are located in `utils/settings.py`:
+Before launching measurements, you might want to edit some parameters, which are located in `utils/settings.py`:
 
 ```python
 # Test phone serial ID (listed in `adb devices`).
@@ -51,6 +52,8 @@ bootTime = 90
 
 ### Run
 
+##### Energy measurements
+
 Monsoon requires scripts to be run as `sudo`, otherwise it will throw an error telling it does not have access to LVPM.
 
 ```shell
@@ -59,6 +62,13 @@ sudo pip install monsoon
 
 ## Run experiments (from project root)
 sudo python3 run_energy_measurements.py
+```
+
+##### Metrics measurements
+
+```shell
+## Run experiments (from project root)
+python3 run_metrics_measurements.py
 ```
 
 ### External references
