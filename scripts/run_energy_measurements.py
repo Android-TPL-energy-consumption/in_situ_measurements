@@ -45,7 +45,7 @@ def run_all_experiments():
     # Run scenarios
     for x in range(runsCount):
         for app in applications:
-            # Disable auto brigthness setting
+            # Disable auto brightness setting
             subprocess.call("{} -s {} shell settings put system screen_brightness_mode 0".format(adb, deviceId), shell=True)
 
             # Set a low screen brightness value
