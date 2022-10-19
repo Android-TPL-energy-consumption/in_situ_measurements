@@ -64,4 +64,5 @@ sudo python3 run_energy_measurements.py
 ### External references
 
 * Monsoon API Python documentation: https://msoon.github.io/powermonitor/Python_Implementation/docs/API.pdf
-* Original experimentation script: https://github.com/rsain/Android-TPLs/blob/master/scripts/collectEnergyConsumption.py
+* Original energy script: https://github.com/rsain/Android-TPLs/blob/master/scripts/collectEnergyConsumption.py
+* Original metrics script: https://github.com/rsain/Android-TPLs/blob/master/scripts/collectNetworkMemoryAndCPU.py
