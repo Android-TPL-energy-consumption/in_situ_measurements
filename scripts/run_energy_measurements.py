@@ -7,7 +7,7 @@ import Monsoon.sampleEngine as sampleEngine
 import Monsoon.Operations as op
 import Monsoon.pmapi as pmapi
 
-from utils.settings import applications, adb, deviceId, runsCount, LVPMSerialNo, deviceVoltage
+from utils.settings import applications, adb, deviceId, runsCount, LVPMSerialNo, deviceVoltage, bootTime
 
 
 def run_all_experiments():
@@ -27,7 +27,7 @@ def run_all_experiments():
 
     # Let user some time to boot phone
     print("You can boot your phone now.")
-    sleep(90)
+    sleep(bootTime)
 
     # Push test scenarios to phone
     print("\n==> Uploading test scenarios to phone...")

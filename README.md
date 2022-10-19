@@ -44,6 +44,9 @@ applications = [
     TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30,
                       "tpl.monitoring.newrelic", "apks/monitoring/new-relic.apk")
 ]
+
+# Time (in seconds) left to the user to boot the phone before measurements start.
+bootTime = 90
 ```
 
 ### Run
