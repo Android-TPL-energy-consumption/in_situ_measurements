@@ -67,7 +67,7 @@ def after():
     print("Done.\n")
 
 
-def start_scenario(scenariopath):
+def start_scenario(scenariopath, expect_connection_cut=True):
     """Starts input scenario on tested phone.
 
     Gets scenario file name from input parameter (which is desktop scenario local path), and
@@ -84,4 +84,6 @@ def start_scenario(scenariopath):
     # so we extract file name from it (e.g. amplitude.sh).
     scenario = scenariopath.split("/")[-1]
     subprocess.call('{} -s {} shell nohup sh /data/local/tmp/{}'.format(adb, deviceId, scenario), shell=True)
-    print("Scenario launched.")
+
+    if expect_connection_cut:
+        print("Scenario launched.")

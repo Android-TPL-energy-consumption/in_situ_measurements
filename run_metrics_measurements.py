@@ -1,6 +1,5 @@
 import os
 import subprocess
-import threading
 from time import sleep
 
 from utils.settings import applications, adb, deviceId, runsCount
@@ -36,6 +35,7 @@ def run_metrics_experiments():
     before()
 
     # Push utility script on phone
+    print("\n==> Push utility script on phone...")
     subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, "utils/scripts/runcommand.sh"), shell=True)
 
     # Run scenarios
@@ -46,12 +46,11 @@ def run_metrics_experiments():
 
             setup_metrics(app.package_name)
 
-            # Launch scenario
-            threading.Thread(target=start_scenario, args=(app.scenario,)).start()
-
             # Stop sampling after scenario is over
             print("====> Waiting for scenario to end...")
-            sleep(app.duration)
+
+            # Launch scenario
+            start_scenario(app.scenario, False)
             print("====> Scenario is over.")
 
             # Wait for phone to be reconnected to computer
