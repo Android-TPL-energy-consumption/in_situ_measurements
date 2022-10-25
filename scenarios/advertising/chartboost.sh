@@ -18,7 +18,7 @@ input tap 127 200
 sleep 2
 
 # tap on show button
-input tap 300 300
+input tap 300 200
 
 # Wait TIME_IN_SECONDS_TO_LOAD_ADS seconds to simulate ads load
 sleep TIME_IN_SECONDS_TO_LOAD_ADS
