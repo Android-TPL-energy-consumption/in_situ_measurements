@@ -84,7 +84,7 @@ def setup_metrics(package):
 
     # Call to top in the android phone (to measure CPU)
     subprocess.call(
-        "{} -s {} shell 'top -d {} | grep {} > {}' &".format(
+        "{} -s {} shell -x 'top -d {} | grep {} > {}' &".format(
             adb, deviceId, SAMPLING_TIME_FOR_CPU_IN_SECONDS, package, TOPINFO_OUTPUT_ON_PHONE),
         shell=True, universal_newlines=True
     )
