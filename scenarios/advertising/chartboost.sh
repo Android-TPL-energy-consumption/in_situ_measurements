@@ -21,4 +21,4 @@ sleep 2
 input tap 300 200
 
 # Wait TIME_IN_SECONDS_TO_LOAD_ADS seconds to simulate ads load
-sleep TIME_IN_SECONDS_TO_LOAD_ADS
+sleep $TIME_IN_SECONDS_TO_LOAD_ADS
