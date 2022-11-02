@@ -90,7 +90,7 @@ def setup_metrics(package):
     )
 
     # Get the pid associated to top
-    pid_top = subprocess.check_output(adb + " -s " + deviceId + " shell ps | grep -w top |  awk '{print $2}'", shell=True,
+    pid_top = subprocess.check_output(adb + " -s " + deviceId + " shell ps -a | grep -w top |  awk '{print $2}'", shell=True,
                                       universal_newlines=True)
     print("====> Top PID: " + pid_top)
 
