@@ -13,9 +13,6 @@ TOPINFO_OUTPUT_ON_PHONE = "/data/local/tmp/topinfo.dat"
 TCPDUMP_OUTPUT_ON_PHONE = '/data/local/tmp/network.pcap'
 BUFFER_SIZE_FOR_TCPDUMP = 30000
 
-pid_memory = 0
-pid_top = 0
-
 
 def run_metrics_experiments():
     """Runs all experiments at once.
@@ -44,7 +41,7 @@ def run_metrics_experiments():
             before_app_experiment()
             print("\n==> Launching run n°{} with {} application".format(x, app.name))
 
-            setup_metrics(app.package_name)
+            pids = setup_metrics(app.package_name)
 
             # Stop sampling after scenario is over
             print("====> Waiting for scenario to end...")
@@ -60,7 +57,7 @@ def run_metrics_experiments():
             subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
             # Download metrics and remove associated files from tested phone.
-            stop_metrics_processus()
+            stop_metrics_processus(pids)
             collect_metrics("{}_{}".format(app.name.replace(" ", "_"), x))
 
     after()
@@ -94,17 +91,22 @@ def setup_metrics(package):
                                       universal_newlines=True)
     print("====> Top PID: " + pid_top)
 
+    return {
+        "pid_memory": pid_memory,
+        "pid_top": pid_top
+    }
+
     # TODO tcpdump
 
 
-def stop_metrics_processus():
+def stop_metrics_processus(pids):
     print("====> Stopping metrics processus...")
 
     # Kill the meminfo process
-    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pid_memory), shell=True, universal_newlines=True)
+    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_memory']), shell=True, universal_newlines=True)
 
     # Kill the top process
-    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pid_top), shell=True, universal_newlines=True)
+    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_top']), shell=True, universal_newlines=True)
 
     # TODO tcpdump
 
