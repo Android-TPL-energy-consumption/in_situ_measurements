@@ -74,20 +74,20 @@ def setup_metrics(package):
 
     # Get the pid associated to meminfo
     pid_memory = subprocess.check_output(
-        adb + " -s " + deviceId + " shell ps | grep -w sh |  awk '{print $2}'",
+        adb + " -s " + deviceId + " shell ps -Af | grep ' dumpsys meminfo --local " + package + "' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
     print("====> Meminfo PID: " + pid_memory)
 
     # Call to top in the android phone (to measure CPU)
     subprocess.call(
-        "{} -s {} shell -x 'top -d {} | grep {} > {}' &".format(
+        "{} -s {} shell -x 'top -o %CPU,%MEM,CMDLINE -d {} | grep {} | grep -v grep > {}' &".format(
             adb, deviceId, SAMPLING_TIME_FOR_CPU_IN_SECONDS, package, TOPINFO_OUTPUT_ON_PHONE),
         shell=True, universal_newlines=True
     )
 
     # Get the pid associated to top
-    pid_top = subprocess.check_output(adb + " -s " + deviceId + " shell ps -a | grep -w top |  awk '{print $2}'", shell=True,
+    pid_top = subprocess.check_output(adb + " -s " + deviceId + " shell pgrep top", shell=True,
                                       universal_newlines=True)
     print("====> Top PID: " + pid_top)
 
