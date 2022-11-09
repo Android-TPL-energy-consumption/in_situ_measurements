@@ -4,4 +4,4 @@
 *.csv
 *.meminfo
 *.pss
-*.top
+*.top*
