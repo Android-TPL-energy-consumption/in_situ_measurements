@@ -65,7 +65,7 @@ def run_metrics_experiments():
 
 def setup_metrics(package):
     # Call to meminfo in the android phone (to measure memory)
-    subprocess.call("{} -s {} shell 'sh {}/runcommand.sh {} \"dumpsys meminfo --local {}| grep TOTAL\" {}' &"
+    subprocess.call("{} -s {} shell 'sh {}/runcommand.sh {} \"dumpsys meminfo --local {}| grep -m 1 TOTAL\" {}' &"
                     .format(
                         adb, deviceId,
                         SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_MEMORY_IN_SECONDS, package, MEMINFO_OUTPUT_ON_PHONE
