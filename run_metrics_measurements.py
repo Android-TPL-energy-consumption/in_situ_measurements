@@ -58,8 +58,13 @@ def run_metrics_experiments():
             # Stop the application.
             subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
-            # Download metrics and remove associated files from tested phone.
+            # Stop metrics sampling on the phone
             stop_metrics_processus(pids)
+
+            # Waiting some time to wait for metrics sampling to end
+            sleep(1)
+
+            # Download metrics and remove associated files from tested phone.
             collect_metrics("{}_{}".format(app.name.replace(" ", "_"), x))
 
     after()
