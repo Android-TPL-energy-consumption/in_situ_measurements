@@ -3,3 +3,5 @@
 rm -rf *pss
 rm -rf *.meminfo
 rm -rf *.top*
+rm -rf *.temperature
+rm -rf *.csv
