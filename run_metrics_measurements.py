@@ -128,6 +128,9 @@ def stop_metrics_processus(pids):
     # Kill the top process
     subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_top']), shell=True, universal_newlines=True)
 
+    # Kill the thermalservice process
+    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_thermalservice']), shell=True, universal_newlines=True)
+
     # TODO tcpdump
 
 
