@@ -58,13 +58,8 @@ def run_metrics_experiments():
             # Stop the application.
             subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
-            # Stop metrics sampling on tested phone.
-            stop_metrics_processus(pids)
-
-            # Waiting for processes related to metrics to end
-            sleep(1)
-
             # Download metrics and remove associated files from tested phone.
+            stop_metrics_processus(pids)
             collect_metrics("{}_{}".format(app.name.replace(" ", "_"), x))
 
     after()
@@ -132,10 +127,6 @@ def stop_metrics_processus(pids):
 
     # Kill the top process
     subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_top']), shell=True, universal_newlines=True)
-
-    # Kill the thermal process
-    subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_thermalservice']), shell=True,
-                    universal_newlines=True)
 
     # TODO tcpdump
 
