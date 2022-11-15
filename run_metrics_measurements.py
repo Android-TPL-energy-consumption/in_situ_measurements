@@ -72,10 +72,11 @@ def run_metrics_experiments():
 
 def setup_metrics(package):
     # Call to meminfo in the android phone (to measure memory)
-    subprocess.call("{} -s {} shell 'sh {}/runcommand.sh {} \"dumpsys meminfo --local {}| grep -m 1 TOTAL\" {}' &"
+    command = "dumpsys meminfo --local " + package + ' | grep -m 1 TOTAL | sed \\"s/^/\$(date +%s) /\\"'
+    subprocess.call("{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {}\" &"
                     .format(
                         adb, deviceId,
-                        SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_MEMORY_IN_SECONDS, package, MEMINFO_OUTPUT_ON_PHONE
+                        SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_MEMORY_IN_SECONDS, command, MEMINFO_OUTPUT_ON_PHONE
                     ),
                     shell=True, universal_newlines=True)
 
@@ -100,7 +101,7 @@ def setup_metrics(package):
 
     # Call to thermalservice in the android phone (to measure temperature)
     command = "dumpsys thermalservice | sed -n \\'/Current temperatures from HAL:/,/Current cooling devices from " \
-              "HAL:/p\\' | sed \\'1d;\$d\\'"
+              "HAL:/p\\' | sed \\'1d;\$d\\' | " + 'sed \\"s/^/\$(date +%s) /\\"'
     subprocess.call(
         "{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {}\" &".format(
             adb, deviceId, SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_TEMPERATURE_IN_SECONDS, command,
@@ -148,7 +149,7 @@ def collect_metrics(output_files_name):
     # Cleaning format of memory file
     os.system("column -t " + output_files_name + ".mem > " + output_files_name + ".meminfo")
     # Generating file containing PSS information
-    os.system("awk '{print $2}' " + output_files_name + ".meminfo > " + output_files_name + ".pss")
+    os.system("awk '{print $1, $3}' " + output_files_name + ".meminfo > " + output_files_name + ".pss")
     # Removing temp file about memory
     os.system("rm -fr " + output_files_name + ".mem")
 
