@@ -6,3 +6,5 @@
 *.pss
 *.top*
 *.temperature
+*.pcap
+*.tcp_stats
