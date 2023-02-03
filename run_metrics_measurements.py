@@ -118,7 +118,7 @@ def setup_metrics(package):
 
     # Call to tcpdump in the android phone (to measure network usage)
     tcp_file = open(package + '.tcp_stats', 'w')
-    subprocess.call(adb + " -s " + deviceId + " shell su -c tcpdump -s 0 -n -B " + str(BUFFER_SIZE_FOR_TCPDUMP) + " -i wlan0 -w " + TCPDUMP_OUTPUT_ON_PHONE + "&", shell=True, universal_newlines=True, stdout=tcp_file)
+    subprocess.call(adb + " -s " + deviceId + " shell su -c tcpdump -s 0 -n -B " + str(BUFFER_SIZE_FOR_TCPDUMP) + " -i wlan0 -w " + TCPDUMP_OUTPUT_ON_PHONE + " &", shell=True, universal_newlines=True, stdout=tcp_file)
     tcp_file.close()
 
     # Get the pid associated to tcpdump
