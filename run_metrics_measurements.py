@@ -122,7 +122,7 @@ def setup_metrics(package):
     tcp_file.close()
 
     # Get the pid associated to tcpdump
-    pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af | grep tcpdump |  awk '{print $2}'", shell=True, universal_newlines=True)
+    pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af | grep tcpdump | grep root | awk '{print $2}'", shell=True, universal_newlines=True)
     print("====> tcpdump PID: " + pid_tcpdump)
 
     return {
