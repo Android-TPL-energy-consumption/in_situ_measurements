@@ -125,11 +125,7 @@ def setup_metrics(package):
     pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep tcpdump | grep root | grep -v grep | awk '{print $2}'", shell=True, universal_newlines=True)
 
     # If there are several pids, we pick the last one
-    multiline_tcpdump = pid_tcpdump.split('\n')                                     # There's one PID per line
-    multiline_tcpdump = list(filter(lambda pid: len(pid) > 0, multiline_tcpdump))   # Remove empty PIDs
-    if len(multiline_tcpdump) > 1:
-        pid_tcpdump = multiline_tcpdump[-1]
-
+    pid_tcpdump = filter_processes_list(pid_tcpdump)
     print("====> tcpdump PID: " + pid_tcpdump)
 
     return {
@@ -203,6 +199,17 @@ def collect_metrics(output_files_name):
     # Delete the tcpdump file from phone
     subprocess.call(adb + " -s " + deviceId + " shell rm " + TCPDUMP_OUTPUT_ON_PHONE, shell=True)
     print("tcpdump file removed in phone")
+
+
+def filter_processes_list(l):
+    pids = l.split('\n')                                               # There's one PID per line
+    pids = list(filter(lambda pid: len(pid) > 0, pids))   # Remove empty PIDs
+    if len(pids) > 1:
+        last = pids[-1]
+        print("Several pids have been detected, returning " + str(last))
+        return last
+    else:
+        return l
 
 
 run_metrics_experiments()
