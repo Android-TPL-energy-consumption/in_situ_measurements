@@ -123,6 +123,13 @@ def setup_metrics(package):
 
     # Get the pid associated to tcpdump
     pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af | grep tcpdump | grep root | grep -v grep | awk '{print $2}'", shell=True, universal_newlines=True)
+
+    # If there are several pids, we pick the last one
+    multiline_tcpdump = pid_tcpdump.split('\n')                                     # There's one PID per line
+    multiline_tcpdump = list(filter(lambda pid: len(pid) > 0, multiline_tcpdump))   # Remove empty PIDs
+    if len(multiline_tcpdump) > 1:
+        pid_tcpdump = multiline_tcpdump[-1]
+
     print("====> tcpdump PID: " + pid_tcpdump)
 
     return {
