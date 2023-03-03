@@ -85,6 +85,7 @@ def setup_metrics(package):
         adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys meminfo --local " + package + "' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
+    pid_memory = filter_processes_list(pid_memory)
     print("====> Meminfo PID: " + pid_memory)
 
     # Call to top in the android phone (to measure CPU)
@@ -97,6 +98,7 @@ def setup_metrics(package):
     # Get the pid associated to top
     pid_top = subprocess.check_output(adb + " -s " + deviceId + " shell pgrep top", shell=True,
                                       universal_newlines=True)
+    pid_top = filter_processes_list(pid_top)
     print("====> Top PID: " + pid_top)
 
     # Call to thermalservice in the android phone (to measure temperature)
@@ -114,6 +116,7 @@ def setup_metrics(package):
         adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys thermalservice' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
+    pid_thermalservice = filter_processes_list(pid_thermalservice)
     print("====> Thermalservice PID: " + pid_thermalservice)
 
     # Call to tcpdump in the android phone (to measure network usage)
