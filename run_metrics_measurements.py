@@ -82,7 +82,7 @@ def setup_metrics(package):
 
     # Get the pid associated to meminfo
     pid_memory = subprocess.check_output(
-        adb + " -s " + deviceId + " shell ps -Af | grep ' dumpsys meminfo --local " + package + "' |  awk '{print $2}'",
+        adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys meminfo --local " + package + "' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
     print("====> Meminfo PID: " + pid_memory)
@@ -111,7 +111,7 @@ def setup_metrics(package):
 
     # Get the pid associated to thermalservice
     pid_thermalservice = subprocess.check_output(
-        adb + " -s " + deviceId + " shell ps -Af | grep ' dumpsys thermalservice' |  awk '{print $2}'",
+        adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys thermalservice' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
     print("====> Thermalservice PID: " + pid_thermalservice)
@@ -122,7 +122,7 @@ def setup_metrics(package):
     tcp_file.close()
 
     # Get the pid associated to tcpdump
-    pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af | grep tcpdump | grep root | grep -v grep | awk '{print $2}'", shell=True, universal_newlines=True)
+    pid_tcpdump = subprocess.check_output(adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep tcpdump | grep root | grep -v grep | awk '{print $2}'", shell=True, universal_newlines=True)
 
     # If there are several pids, we pick the last one
     multiline_tcpdump = pid_tcpdump.split('\n')                                     # There's one PID per line
