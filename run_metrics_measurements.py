@@ -205,14 +205,9 @@ def collect_metrics(output_files_name):
 
 
 def filter_processes_list(l):
-    pids = l.split('\n')                                               # There's one PID per line
-    pids = list(filter(lambda pid: len(pid) > 0, pids))   # Remove empty PIDs
-    if len(pids) > 1:
-        last = pids[-1]
-        print("Several pids have been detected, returning " + str(last))
-        return last
-    else:
-        return l
+    pids = l.split('\n')                                    # There's one PID per line
+    pids = list(filter(lambda pid: len(pid) > 0, pids))     # Remove empty PIDs
+    return pids[-1]
 
 
 run_metrics_experiments()
