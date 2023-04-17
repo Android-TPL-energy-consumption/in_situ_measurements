@@ -152,10 +152,8 @@ def stop_metrics_processus(pids):
     subprocess.call("{} -s {} shell kill -SIGTERM {}".format(adb, deviceId, pids['pid_thermalservice']), shell=True, universal_newlines=True)
 
     # Kill the tcpdump process
-    print("==")
-    subprocess.call("{} -s {} shell su -c killall -9 tcpdump".format(adb, deviceId), shell=True, universal_newlines=True)
+    subprocess.call("{} -s {} shell su -c killall -15 tcpdump".format(adb, deviceId), shell=True, universal_newlines=True)
     # print(subprocess.call("{} -s {} shell su -c kill -SIGTERM {}".format(adb, deviceId, pids['pid_tcpdump']), shell=True, universal_newlines=True))
-    print("==")
 
 
 def collect_metrics(output_files_name):
