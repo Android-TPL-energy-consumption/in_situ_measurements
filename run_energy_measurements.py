@@ -24,7 +24,7 @@ def run_all_experiments():
         * run scenarios.
     """
 
-    before()
+    results_dir = before()
 
     # Run scenarios
     for x in range(runsCount):
@@ -43,7 +43,7 @@ def run_all_experiments():
             threading.Thread(target=start_scenario, args=(app.scenario,)).start()
 
             # Start sampling (disables USB connection)
-            monsoon_engine.enableCSVOutput("{}_{}.csv".format(app.name, x))
+            monsoon_engine.enableCSVOutput("{}/{}/{}_{}.csv".format(results_dir, app.category, app.name, x))
             thread = threading.Thread(target=start_sampling)
             thread.start()
 

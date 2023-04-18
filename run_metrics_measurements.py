@@ -31,7 +31,7 @@ def run_metrics_experiments():
         * run scenarios.
     """
 
-    before()
+    results_dir = before()
 
     # Push utility script on phone
     print("\n==> Push utility script on phone...")
@@ -65,7 +65,7 @@ def run_metrics_experiments():
             sleep(1)
 
             # Download metrics and remove associated files from tested phone.
-            collect_metrics("{}/{}_{}".format(app.category, app.name.replace(" ", "_"), x))
+            collect_metrics("{}/{}/{}_{}".format(results_dir, app.category, app.name.replace(" ", "_"), x))
 
     after()
 

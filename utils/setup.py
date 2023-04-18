@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import subprocess
 from time import sleep
@@ -27,7 +28,10 @@ def before():
         * let user some time to boot tested phone;
         * push test scenarios to phone;
         * install all tested APKs on tested phone;
-        * disables screen sleep.
+        * disables screen sleep;
+        * create a directory for each application category.
+
+    This will return the name of the current experiment directory.
     """
     # Let user some time to boot phone
     print("You can boot your phone now.")
@@ -39,9 +43,14 @@ def before():
         subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, app.scenario), shell=True)
 
     # Create results directories
+    now = datetime.now()
+    results_dir_name = now.strftime("results_%d-%m-%Y_%H:%M:%S")
+    os.mkdir(results_dir_name)
+
     for app in applications:
-        if not os.path.exists(app.category):
-            os.mkdir(app.category)
+        app_dir = results_dir_name + "/" + app.category
+        if not os.path.exists(app_dir):
+            os.mkdir(app_dir)
 
     # Install all applications at once.
     print("\n==> Installing test applications on phone...")
@@ -50,6 +59,8 @@ def before():
 
     # Force the screen to be always on
     subprocess.call("{} -s {} shell svc power stayon true".format(adb, deviceId), shell=True)
+
+    return results_dir_name
 
 
 def after():
