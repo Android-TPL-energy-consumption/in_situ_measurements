@@ -1,3 +1,4 @@
+import os
 import subprocess
 from time import sleep
 
@@ -36,6 +37,11 @@ def before():
     print("\n==> Uploading test scenarios to phone...")
     for app in applications:
         subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, app.scenario), shell=True)
+
+    # Create results directories
+    for app in applications:
+        if not os.path.exists(app.category):
+            os.mkdir(app.category)
 
     # Install all applications at once.
     print("\n==> Installing test applications on phone...")
