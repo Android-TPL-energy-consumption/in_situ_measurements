@@ -65,7 +65,7 @@ def run_metrics_experiments():
             sleep(1)
 
             # Download metrics and remove associated files from tested phone.
-            collect_metrics("{}_{}".format(app.name.replace(" ", "_"), x))
+            collect_metrics("{}/{}_{}".format(app.category, app.name.replace(" ", "_"), x))
 
     after()
 
