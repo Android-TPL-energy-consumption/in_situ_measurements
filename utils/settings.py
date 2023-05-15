@@ -18,14 +18,15 @@ runsCount = 3
 
 # Tested applications.
 applications = [
-    # TestedApplication("Amplitude", "scenarios/monitoring/amplitude.sh", 30, "tpl.monitoring.amplitude", "apks/monitoring/amplitude.apk"),
-    # TestedApplication("Firebase", "scenarios/monitoring/firebase.sh", 30, "tpl.monitoring.firebase", "apks/monitoring/firebase.apk"),
-    # TestedApplication("New Relic", "scenarios/monitoring/new_relic.sh", 30, "tpl.monitoring.newrelic", "apks/monitoring/new-relic.apk"),
+    TestedApplication("Amplitude", "monitoring", "scenarios/monitoring/amplitude.sh", 30, "tpl.monitoring.amplitude", "apks/monitoring/amplitude.apk"),
+    TestedApplication("Firebase", "monitoring", "scenarios/monitoring/firebase.sh", 30, "tpl.monitoring.firebase", "apks/monitoring/firebase.apk"),
+    TestedApplication("New Relic", "monitoring", "scenarios/monitoring/new_relic.sh", 30, "tpl.monitoring.newrelic", "apks/monitoring/new-relic.apk"),
+    TestedApplication("nosdk", "monitoring", "scenarios/monitoring/nosdk.sh", 30, "tpl.monitoring.template", "apks/monitoring/nosdk.apk"),
 
-    # TestedApplication("Admob", "scenarios/advertising/admob.sh", 40, "tpl.ads.banner.admob", "apks/advertising/admob.apk"),
-    TestedApplication("Chartboost", "scenarios/advertising/chartboost.sh", 40, "tpl.ads.banner.chartboost", "apks/advertising/chartboost.apk"),
-    # TestedApplication("Max", "scenarios/advertising/max.sh", 40, "tpl.ads.banner.max", "apks/advertising/max.apk"),
-    # TestedApplication("NoAdSdk", "scenarios/advertising/nosdk.sh", 40, "tpl.ads.banner.template", "apks/advertising/nosdk.apk")
+    TestedApplication("Admob", "advertising", "scenarios/advertising/admob.sh", 40, "tpl.ads.banner.admob", "apks/advertising/admob.apk"),
+    TestedApplication("Chartboost", "advertising", "scenarios/advertising/chartboost.sh", 40, "tpl.ads.banner.chartboost", "apks/advertising/chartboost.apk"),
+    TestedApplication("Max", "advertising", "scenarios/advertising/max.sh", 40, "tpl.ads.banner.max", "apks/advertising/max.apk"),
+    TestedApplication("nosdk", "advertising", "scenarios/advertising/nosdk.sh", 40, "tpl.ads.banner.template", "apks/advertising/nosdk.apk")
 
 ]
 
