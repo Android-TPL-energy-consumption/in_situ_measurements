@@ -5,11 +5,13 @@ are:
 * `**.py`: Python scripts, launched on desktop, that will run all test scenarios on tested phone;
 * `scenarios/**.sh`: test scenarios that will run on phone.
 
+The `apk` directory contains release versions of tested applications; all source code is available on the
+[Android TPL GitHub organization](https://github.com/Android-TPL-energy-consumption/).
+
 ### Requirements
 
 * Monsoon low-voltage power monitor: https://msoon.github.io/powermonitor/LVPM.html
 * Battery-bypassed phone
-* Compiled (release mode) test APKs (you'll find test applications among this organisation's repositories)
 
 ### Setup
 
