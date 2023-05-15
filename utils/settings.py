@@ -28,7 +28,8 @@ applications = [
     TestedApplication("Max", "advertising", "scenarios/advertising/max.sh", 40, "tpl.ads.banner.max", "apks/advertising/max.apk"),
     TestedApplication("nosdk", "advertising", "scenarios/advertising/nosdk.sh", 40, "tpl.ads.banner.template", "apks/advertising/nosdk.apk"),
 
-    TestedApplication("Crashlytics", "crash_reporting", "scenarios/crash_reporting/crashlytics.sh", 20, "tpl.crashreporting.crashlytics", "apks/crash_reporting/crashlytics.apk")
+    TestedApplication("Crashlytics", "crash_reporting", "scenarios/crash_reporting/crashlytics.sh", 20, "tpl.crashreporting.crashlytics", "apks/crash_reporting/crashlytics.apk"),
+    TestedApplication("nosdk", "crash_reporting", "scenarios/crash_reporting/nosdk.sh", 20, "tpl.crashreporting.template", "apks/crash_reporting/nosdk.apk")
 ]
 
 # Time (in seconds) left to the user to boot the phone before measurements start.
