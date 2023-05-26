@@ -30,6 +30,7 @@ applications = [
 
     TestedApplication("Crashlytics", "crash_reporting", "scenarios/crash_reporting/crashlytics.sh", 20, "tpl.crashreporting.crashlytics", "apks/crash_reporting/crashlytics.apk"),
     TestedApplication("New Relic", "crash_reporting", "scenarios/crash_reporting/new-relic.sh", 20, "tpl.crashreporting.newrelic", "apks/crash_reporting/new-relic.apk"),
+    TestedApplication("ACRA", "crash_reporting", "scenarios/crash_reporting/acra.sh", 20, "tpl.crashreporting.acra", "apks/crash_reporting/acra.apk"),
     TestedApplication("nosdk", "crash_reporting", "scenarios/crash_reporting/nosdk.sh", 20, "tpl.crashreporting.template", "apks/crash_reporting/nosdk.apk")
 ]
 
