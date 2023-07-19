@@ -85,7 +85,7 @@ def setup_metrics(package):
         adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys meminfo --local " + package + "' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
-    pid_memory = filter_processes_list(pid_memory)
+    pid_memory = filter_processes_list(pid_memory, True)
     print("====> Meminfo PID: " + pid_memory)
 
     # Call to top in the android phone (to measure CPU)
@@ -116,7 +116,7 @@ def setup_metrics(package):
         adb + " -s " + deviceId + " shell ps -Af --sort=+pid | grep ' dumpsys thermalservice' |  awk '{print $2}'",
         shell=True, universal_newlines=True
     )
-    pid_thermalservice = filter_processes_list(pid_thermalservice)
+    pid_thermalservice = filter_processes_list(pid_thermalservice, True)
     print("====> Thermalservice PID: " + pid_thermalservice)
 
     # Call to tcpdump in the android phone (to measure network usage)
@@ -205,10 +205,10 @@ def collect_metrics(output_files_name):
     print("tcpdump file removed in phone")
 
 
-def filter_processes_list(l):
+def filter_processes_list(l, return_first = False):
     pids = l.split('\n')                                    # There's one PID per line
     pids = list(filter(lambda pid: len(pid) > 0, pids))     # Remove empty PIDs
-    return pids[-1]
+    return pids[0 if return_first else -1]
 
 
 run_metrics_experiments()
