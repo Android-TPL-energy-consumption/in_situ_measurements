@@ -62,7 +62,7 @@ def run_metrics_experiments():
             stop_metrics_processus(pids)
 
             # Waiting some time to wait for metrics sampling to end
-            sleep(1)
+            sleep(3)
 
             # Download metrics and remove associated files from tested phone.
             collect_metrics("{}/{}/{}_{}".format(results_dir, app.category, app.name.replace(" ", "_"), x))
