@@ -1,6 +1,7 @@
 import os
 import subprocess
 from time import sleep
+from datetime import datetime
 
 from utils.settings import applications, adb, deviceId, runsCount
 from utils.setup import before_app_experiment, before, after, start_scenario
@@ -30,6 +31,9 @@ def run_metrics_experiments():
         * upload all test scenarios at once to tested phone;
         * run scenarios.
     """
+
+    now = datetime.now()
+    print( now.strftime("Started experiments at %d-%m-%Y %H:%M:%S.") )
 
     results_dir = before()
 
@@ -68,6 +72,9 @@ def run_metrics_experiments():
             collect_metrics("{}/{}/{}_{}".format(results_dir, app.category, app.name.replace(" ", "_"), x))
 
     after()
+
+    now = datetime.now()
+    print( now.strftime("Finished experiments at %d-%m-%Y %H:%M:%S.") )
 
 
 def setup_metrics(package):
