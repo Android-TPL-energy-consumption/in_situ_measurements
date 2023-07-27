@@ -216,7 +216,3 @@ def filter_processes_list(l, return_first = False):
     pids = l.split('\n')                                    # There's one PID per line
     pids = list(filter(lambda pid: len(pid) > 0, pids))     # Remove empty PIDs
     return pids[0 if return_first else -1]
-
-
-run_metrics_experiments()
-exit(0)
