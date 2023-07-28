@@ -24,6 +24,8 @@ def setup_monsoon():
     engine.ConsoleOutput(False)
 
     # Auto mode disables USB connection when sampling starts, and reactivates it when sampling ends.
+    # It seems that Auto does not enable USB on launch, so you might need to play with the On value.
+    # monsoon.setUSBPassthroughMode(op.USB_Passthrough.On)
     monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
 
     # Stop condition is time (will wait for a scenario to end).
