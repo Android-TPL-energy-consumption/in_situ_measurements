@@ -80,7 +80,7 @@ def run_metrics_experiments():
 def setup_metrics(package):
     # Call to meminfo in the android phone (to measure memory)
     command = "dumpsys meminfo --local " + package + ' | grep -m 1 TOTAL | sed \\"s/^/\$(date +%s) /\\"'
-    subprocess.call("{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {}\" &"
+    subprocess.call("{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {} &\" &"
                     .format(
                         adb, deviceId,
                         SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_MEMORY_IN_SECONDS, command, MEMINFO_OUTPUT_ON_PHONE
@@ -112,7 +112,7 @@ def setup_metrics(package):
     command = "dumpsys thermalservice | sed -n \\'/Current temperatures from HAL:/,/Current cooling devices from " \
               "HAL:/p\\' | sed \\'1d;\$d\\' | " + 'sed \\"s/^/\$(date +%s) /\\"'
     subprocess.call(
-        "{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {}\" &".format(
+        "{} -s {} shell \"sh {}/runcommand.sh {} $\'{}\' {} &\" &".format(
             adb, deviceId, SCRIPTS_ON_PHONE, SAMPLING_TIME_FOR_TEMPERATURE_IN_SECONDS, command,
             THERMALINFO_OUTPUT_ON_PHONE),
         shell=True, universal_newlines=True
