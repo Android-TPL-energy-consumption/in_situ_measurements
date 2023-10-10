@@ -4,7 +4,7 @@ import Monsoon.Operations as op
 from utils.settings import LVPMSerialNo, deviceVoltage
 
 
-def setup_monsoon():
+def setup_monsoon(measure_energy):
     """ Sets up Monsoon power monitor configuration.
 
     This configures Monsoon low-voltage power monitor (LVPM)[1] to provide some current on main channels to power tested
@@ -26,7 +26,10 @@ def setup_monsoon():
     # Auto mode disables USB connection when sampling starts, and reactivates it when sampling ends.
     # It seems that Auto does not enable USB on launch, so you might need to play with the On value.
     # monsoon.setUSBPassthroughMode(op.USB_Passthrough.On)
-    monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
+    if measure_energy:
+        monsoon.setUSBPassthroughMode(op.USB_Passthrough.Auto)
+    else:
+        monsoon.setUSBPassthroughMode(op.USB_Passthrough.On)
 
     # Stop condition is time (will wait for a scenario to end).
     engine.setTriggerChannel(sampleEngine.channels.timeStamp)

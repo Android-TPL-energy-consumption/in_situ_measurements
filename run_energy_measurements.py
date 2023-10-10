@@ -2,6 +2,7 @@ import subprocess
 import threading
 from time import sleep
 from datetime import datetime
+import sys
 
 import Monsoon.sampleEngine as sampleEngine
 
@@ -26,15 +27,15 @@ def run_all_experiments():
         * run scenarios.
     """
 
+    global pids
     now = datetime.now()
     print(now.strftime("Started experiments at %d-%m-%Y %H:%M:%S."))
 
-    results_dir = before()
+    results_dir = before(measure_energy)
 
     # Push utility script on phone
     print("\n==> Push utility script on phone...")
     subprocess.call("{} -s {} push {} /data/local/tmp".format(adb, deviceId, "utils/scripts/runcommand.sh"), shell=True)
-
 
     # Run scenarios
     for x in range(runsCount):
@@ -42,25 +43,31 @@ def run_all_experiments():
             before_app_experiment()
             print("\n==> Launching run n°{} with {} application".format(x, app.name))
 
-            pids = setup_metrics(app.package_name)
+            if not measure_energy:
+                pids = setup_metrics(app.package_name)
 
             # Stops sampling after scenario is over.
-            monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
+            else:
+                monsoon_engine.setStopTrigger(sampleEngine.triggers.GREATER_THAN, app.duration)
             print("====> Waiting for scenario to end...")
 
             # Launch scenario
-            threading.Thread(target=start_scenario, args=(app.scenario,)).start()
+            if measure_energy:
+                threading.Thread(target=start_scenario, args=(app.scenario,)).start()
 
-            # Start sampling (disables USB connection)
-            monsoon_engine.enableCSVOutput("{}/{}/{}_{}.csv".format(results_dir, app.category, app.name, x))
-            thread = threading.Thread(target=start_sampling)
-            thread.start()
+                # Start sampling (disables USB connection)
+                monsoon_engine.enableCSVOutput("{}/{}/{}_{}.csv".format(results_dir, app.category, app.name, x))
+                thread = threading.Thread(target=start_sampling)
+                thread.start()
 
-            # Stop sampling after scenario is over
-            print("====> Waiting for scenario to end (will throw since phone is disconnected on sampling start)...")
-            thread.join()
+                # Stop sampling after scenario is over
+                print("====> Waiting for scenario to end (will throw since phone is disconnected on sampling start)...")
+                thread.join()
+
+            else:
+                start_scenario(app.scenario, False)
+
             print("====> Scenario is over.")
-
             # Wait for phone to be reconnected to computer
             sleep(4)
 
@@ -68,13 +75,15 @@ def run_all_experiments():
             subprocess.call("{} -s {} shell am force-stop {}".format(adb, deviceId, app.package_name), shell=True)
 
             # Stop metrics sampling on the phone
-            stop_metrics_processus(pids)
+            if not measure_energy:
+                stop_metrics_processus(pids)
 
             # Waiting some time to wait for metrics sampling to end
             sleep(3)
 
             # Download metrics and remove associated files from tested phone.
-            collect_metrics("{}/{}/{}_{}".format(results_dir, app.category, app.name.replace(" ", "_"), x))
+            if not measure_energy:
+                collect_metrics("{}/{}/{}_{}".format(results_dir, app.category, app.name.replace(" ", "_"), x))
 
     after()
 
@@ -83,8 +92,21 @@ def start_sampling():
     monsoon_engine.startSampling(sampleEngine.triggers.SAMPLECOUNT_INFINITE)
 
 
+# Two script configurations:
+#   * run energy measurements without system metrics
+#   * run system metrics measurements without energy measurement
+measure_energy = True
+if len(sys.argv) > 1 and sys.argv[1] == "-system":
+    measure_energy = False
+
+if measure_energy:
+    print("This will record energy consumption of the smartphone.")
+else:
+    print("This will record system metrics of the smartphone.")
+
+
 # Prepare Monsoon tooling
-monsoon_engine = setup_monsoon()
+monsoon_engine = setup_monsoon(measure_energy)
 
 run_all_experiments()
 exit(0)

@@ -63,7 +63,10 @@ Monsoon requires scripts to be run as `sudo`, otherwise it will throw an error t
 sudo pip install monsoon
 
 ## Run experiments (from project root)
-sudo python3 run_energy_measurements.py
+### Two script configurations:
+###   * run energy measurements without system metrics (no flag)
+###   * run system metrics measurements without energy measurement (-system flag)
+sudo python3 run_energy_measurements.py [-system]
 ```
 
 ##### Metrics measurements

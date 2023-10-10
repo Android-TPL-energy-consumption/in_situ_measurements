@@ -21,7 +21,7 @@ def before_app_experiment():
     subprocess.call("{} -s {} shell dumpsys battery set level 100".format(adb, deviceId), shell=True)
 
 
-def before():
+def before(measure_energy):
     """Setup global parameters before starting experiments.
 
     This will:
@@ -44,7 +44,7 @@ def before():
 
     # Create results directories
     now = datetime.now()
-    results_dir_name = now.strftime("results_%d-%m-%Y_%H:%M:%S")
+    results_dir_name = now.strftime("results_{}_%d-%m-%Y_%H:%M:%S".format("energy" if measure_energy else "system"))
     os.mkdir(results_dir_name)
 
     for app in applications:
